@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from ChairApp.views import HomeView
 urlpatterns = [
-    path('home/', views.showRoom, name='showRoom'),
+    path('home/', HomeView.as_view(), name='get'),
 ]

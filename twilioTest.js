@@ -136,10 +136,10 @@ function startWebServer(model: {
             for (let b of r.bounding_boxes.filter(x => x.value >= 0.5)) {
                     bb.push(b);
             }
-            let totalChairs = 3;    //Max Chairs in the Room
             r.bounding_boxes = bb;
             let emptycount = r.bounding_boxes.filter(x => x.label === 'seatempty').length;
             let takencount = r.bounding_boxes.filter(x => x.label === 'seattaken').length;
+            let totalChairs = emptycount+takencount;    //Max Chairs in the Room
 
 
             if (bb.find(x => x.label === 'seattaken')) {
@@ -150,8 +150,8 @@ function startWebServer(model: {
                 else {
                     console.log('Room is Partially Occupied');
                 }
-                console.log("Empty Seats: " + emptycount);
-                console.log("Taken Seats: " + takencount);
+                console.log("Empty Seats detected: " + emptycount);
+                console.log("Taken Seats detected: " + takencount);
                 console.log("Occupancy: " + takencount+ "/" + totalChairs);
                 console.log("\n");
 
@@ -162,14 +162,14 @@ function startWebServer(model: {
                     try {
                         if(takencount >= totalChairs){
                             await twilioClient.messages.create({
-                                body: '\nRoom is Full\nEmpty Seats: ' +emptycount+"\nTaken Seats: " +takencount+"\nOccupancy: " + takencount+"/" + totalChairs,
+                                body: '\nRoom is Full\nEmpty Seats detected: ' +emptycount+"\nTaken Seats detected: " +takencount+"\nOccupancy: " + takencount+"/" + totalChairs,
                                 to: process.env.TWILIO_TO || '',
                                 from: process.env.TWILIO_FROM || ''
                             });
                         }
                         else{
                             await twilioClient.messages.create({
-                                body: '\nRoom is Partially Occupied\n'+'Empty Seats: ' + emptycount+"\nTaken Seats: " +takencount+"\nOccupancy: " + takencount+"/" + totalChairs,
+                                body: '\nRoom is Partially Occupied\n'+'Empty Seats detected: ' + emptycount+"\nTaken Seats detected: " +takencount+"\nOccupancy: " + takencount+"/" + totalChairs,
                                 to: process.env.TWILIO_TO || '',
                                 from: process.env.TWILIO_FROM || ''
                             });
@@ -186,8 +186,8 @@ function startWebServer(model: {
             //only seatenmpty
             else if (bb.find(x => x.label === 'seatempty')) {
                 console.log('Room is Empty');
-                console.log("Empty Seats: " + emptycount);
-                console.log("Taken Seats: " + takencount);
+                console.log("Empty Seats detected: " + emptycount);
+                console.log("Taken Seats detected: " + takencount);
                 console.log("Occupancy: " + takencount+ "/" + totalChairs);
                 console.log("\n");
 
@@ -196,7 +196,7 @@ function startWebServer(model: {
                     lastSentMessage = Date.now();
                     try {
                         await twilioClient.messages.create({
-                            body: '\nRoom is empty\nEmpty Seats: ' +emptycount+"\nTaken Seats: " +takencount+"\nOccupancy: " + takencount+"/" + totalChairs,
+                            body: '\nRoom is empty\nEmpty Seats detected: ' +emptycount+"\nTaken Seats detected: " +takencount+"\nOccupancy: " + takencount+"/" + totalChairs,
                             to: process.env.TWILIO_TO || '',
                             from: process.env.TWILIO_FROM || ''
                         });

@@ -1,0 +1,11 @@
+<head>
+    <title>Monitored Rooms</title>
+</head>
+<body>
+    {% for room in rooms %}
+
+    <p> Room: {{room.roomName}} <br>
+        Occupation Status: {{room.occupiedChairs}}/{{room.totalChairs}}</p>
+    <br>
+    {% endfor %}
+</body>

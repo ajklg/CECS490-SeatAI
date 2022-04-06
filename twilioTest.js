@@ -157,7 +157,7 @@ function startWebServer(model: {
 
 
                 // if last sent message >30 sec. ago?
-                if (Date.now() > lastSentMessage + 30000) {
+                if (Date.now() > lastSentMessage + 10000) {
                     lastSentMessage = Date.now();
                     try {
                         if(takencount >= totalChairs){
@@ -192,7 +192,7 @@ function startWebServer(model: {
                 console.log("\n");
 
                 // if last sent message >30 sec. ago?
-                if (Date.now() > lastSentMessage + 30000) {
+                if (Date.now() > lastSentMessage + 10000) {
                     lastSentMessage = Date.now();
                     try {
                         await twilioClient.messages.create({

@@ -1,0 +1,19 @@
+<head>
+    <title>Update Room</title>
+</head>
+<body>
+    <center>
+    <h1> Update Room </h1>
+    <br/>
+    {{ room.roomName }} Occupancy
+    <br>
+    <form action="" method=POST>
+        {% csrf_token %}
+
+        {{form.as_p}}
+        <input type="submit" value="Update" 
+        class="btn btn-secondary">
+         
+    </form>
+    </center>
+</body>

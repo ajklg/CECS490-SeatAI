@@ -1,11 +1,51 @@
-<head>
-    <title>Monitored Rooms</title>
-</head>
-<body>
-    {% for room in rooms %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <<meta http-equiv="refresh" content="5">
+        <title>Room Occupancies</title>
+        <style>
+            body{
+                background-color: lightblue;
+                text-align: center;
+            }
+            h1{
+                font-size: 70px;
+                text-align: center;
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+            }
+            .footer {
+                font-size: 30px;
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                background-color: darkgray;
+                color: white;
+                text-align: center;
+            }
 
-    <p> Room: {{ room.roomName }} <br>
-        Occupation Status: {{ room.occupiedChairs }}/{{ room.totalChairs }}</p>
-    <br>
-    {% endfor %}
-</body>
+        </style>
+    </head>
+    <body>
+        <h1>Room Occupancies</h1>
+
+        {% for room in rooms %}
+            <div style = "
+                background: lightgray;
+                font-size: 50px;
+                padding: 2px;
+                border: 2px solid black;
+                margin: auto;
+                width:60%;
+            ">
+                {{ room.roomName }} <br>
+                Occupation Status: {{ room.occupiedChairs }}/{{ room.totalChairs }}
+            </div>
+            <br>
+        {% endfor %}
+        
+        <div class="footer">
+            <p>Team 10: SeatAI</p>
+        </div> 
+    </body>
+</html>

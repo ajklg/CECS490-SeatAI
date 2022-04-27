@@ -142,10 +142,13 @@ function startWebServer(model: {
             let totalChairs = emptycount+takencount;    //Max Chairs in the Room
 
 
-            if (bb.find(x => x.label === 'seattaken')) {
+            if (bb.find(x => x.label === 'seattaken') || bb.find(x => x.label === 'seatempty')) {
                 if(takencount >= totalChairs){
                     console.log('Room is Full');
                     takencount = totalChairs;
+                }
+                else if(takencount == 0){
+                    console.log('Room is Empty');
                 }
                 else {
                     console.log('Room is Partially Occupied');
@@ -157,50 +160,15 @@ function startWebServer(model: {
 
 
                 // if last sent message >30 sec. ago?
-                if (Date.now() > lastSentMessage + 10000) {
-                    lastSentMessage = Date.now();
-                    try {
-                        if(takencount >= totalChairs){
-                            await twilioClient.messages.create({
-                                body: '\nRoom is Full\nEmpty Seats detected: ' +emptycount+"\nTaken Seats detected: " +takencount+"\nOccupancy: " + takencount+"/" + totalChairs,
-                                to: process.env.TWILIO_TO || '',
-                                from: process.env.TWILIO_FROM || ''
-                            });
-                        }
-                        else{
-                            await twilioClient.messages.create({
-                                body: '\nRoom is Partially Occupied\n'+'Empty Seats detected: ' + emptycount+"\nTaken Seats detected: " +takencount+"\nOccupancy: " + takencount+"/" + totalChairs,
-                                to: process.env.TWILIO_TO || '',
-                                from: process.env.TWILIO_FROM || ''
-                            });
-                        }
-                    }
-                    catch (ex2) {
-                        let ex = <Error>ex2;
-                        console.warn('Failed to send a message via Twilio', ex.message || ex.toString());
-                    }
-                }
-            }
-
-
-            //only seatenmpty
-            else if (bb.find(x => x.label === 'seatempty')) {
-                console.log('Room is Empty');
-                console.log("Empty Seats detected: " + emptycount);
-                console.log("Taken Seats detected: " + takencount);
-                console.log("Occupancy: " + takencount+ "/" + totalChairs);
-                console.log("\n");
-
-                // if last sent message >30 sec. ago?
-                if (Date.now() > lastSentMessage + 10000) {
+                if (Date.now() > lastSentMessage + 5000) {
                     lastSentMessage = Date.now();
                     try {
                         await twilioClient.messages.create({
-                            body: '\nRoom is empty\nEmpty Seats detected: ' +emptycount+"\nTaken Seats detected: " +takencount+"\nOccupancy: " + takencount+"/" + totalChairs,
+                            body: takencount+'',
                             to: process.env.TWILIO_TO || '',
                             from: process.env.TWILIO_FROM || ''
                         });
-                    }
+                        }
                     catch (ex2) {
                         let ex = <Error>ex2;
                         console.warn('Failed to send a message via Twilio', ex.message || ex.toString());
